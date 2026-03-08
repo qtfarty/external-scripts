@@ -28,11 +28,11 @@
     --bg: #1e1e1e;
     --card-bg: #282828;
     --highlight-bg: #353535;
-    --text: #e4e4e7;
-    --text-heading: #dcdcdc;
-    --text-secondary: #a1a1aa;
-    --border-color: rgba(255, 255, 255, 0.3);
-    --border: 3px solid rgba(255, 255, 255, 0.3);
+    --text: #ebebee;
+    --text-heading: #f2f2f3;
+    --text-secondary: #b8b8c0;
+    --border-color: rgba(255, 255, 255, 0.42);
+    --border: 3px solid rgba(255, 255, 255, 0.42);
     --accent: #ccff00;
     --accent-hover: #b8e600;
     --accent-text: #1a1a1c;
@@ -156,7 +156,55 @@ html { scroll-behavior: smooth; }
 .sv-content-block .sv-md-editor .sv-desc-btn:focus {
   color: var(--accent-text) !important;
   background-color: var(--accent) !important;
-  border-color: var(--accent) !important;
+  border: 2px solid var(--accent) !important;
+  box-shadow: 6px 6px 0 var(--accent) !important;
+  position: relative !important;
+  overflow: visible !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+              box-shadow 0.2s ease !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 5px !important;
+  left: -7px !important;
+  bottom: -7px !important;
+  right: 5px !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  border-left: 2px solid var(--border-color) !important;
+  pointer-events: none !important;
+  transition: border-color 0.2s ease, top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn:hover,
+.sv-content-block .sv-md-editor .sv-desc-btn:focus {
+  color: var(--accent) !important;
+  border-color: var(--accent-hover) !important;
+  background-color: transparent !important;
+  box-shadow: 2px 2px 0 var(--accent-hover) !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn:hover::before,
+.sv-content-block .sv-md-editor .sv-desc-btn:focus::before {
+  border-color: var(--accent-hover) !important;
+  top: 3px !important;
+  left: -5px !important;
+  bottom: -5px !important;
+  right: 3px !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn:active {
+  color: var(--accent) !important;
+  background-color: transparent !important;
+  box-shadow: 1px 1px 0 var(--accent-hover) !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn:active::before {
+  top: 2px !important;
+  left: -4px !important;
+  bottom: -4px !important;
+  right: 2px !important;
 }
 
 /* Forma-style offset double-border (bottom-left shadow) */
@@ -170,18 +218,22 @@ html { scroll-behavior: smooth; }
   border-bottom: 3px solid var(--accent) !important;
   border-left: 3px solid var(--accent) !important;
   pointer-events: none !important;
-  transition: border-color 0.2s ease !important;
+  transition: border-color 0.2s ease, top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease !important;
 }
 
 .sv-desc-btn:hover {
-  color: var(--accent-text) !important;
+  color: var(--accent) !important;
   border-color: var(--accent-hover) !important;
-  background-color: var(--accent-hover) !important;
-  transform: none !important;
+  background-color: transparent !important;
+  transform: translate(-1px, -1px) !important;
 }
 
 .sv-desc-btn:hover::before {
   border-color: var(--accent-hover) !important;
+  top: 3px !important;
+  left: -5px !important;
+  bottom: -5px !important;
+  right: 3px !important;
 }
 
 /* ---- #3 Zigzag accent dividers (3 sections) ---- */
@@ -561,35 +613,33 @@ html { scroll-behavior: smooth; }
   height: 34px !important;
   border-radius: 999px !important;
   border: none !important;
-  background-color: #808080 !important;
-  transition: background-color 0.2s ease, transform 0.2s ease !important;
+  background-color: transparent !important;
+  color: var(--border-color) !important;
+  transition: color 0.2s ease, transform 0.2s ease !important;
   padding: 7px !important;
 }
 
 .sv-social-share-btns__badge:hover {
-  background-color: var(--accent) !important;
+  background-color: transparent !important;
   border: none !important;
+  color: var(--accent) !important;
   transform: scale(0.95) !important;
 }
 
 .sv-social-share-btns__badge-icon {
   width: 18px !important;
   height: 18px !important;
-  filter: grayscale(1) brightness(0.18) !important;
+  color: inherit !important;
+  filter: none !important;
   opacity: 1 !important;
-  transition: filter 0.2s ease !important;
 }
 
-.sv-social-share-btns__badge:hover .sv-social-share-btns__badge-icon {
-  filter: grayscale(1) brightness(0.12) !important;
-}
-@media (prefers-color-scheme: dark) {
-  .sv-social-share-btns__badge-icon {
-    filter: grayscale(1) brightness(0.18) !important;
-  }
-  .sv-social-share-btns__badge:hover .sv-social-share-btns__badge-icon {
-    filter: grayscale(1) brightness(0.12) !important;
-  }
+.sv-social-share-btns__badge-icon svg,
+.sv-social-share-btns__badge-icon path,
+.sv-social-share-btns__badge-icon circle,
+.sv-social-share-btns__badge-icon rect {
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 /* ---------- Scroll-to-top ---------- */
@@ -642,4 +692,194 @@ html { scroll-behavior: smooth; }
   .sv-viewer-form__input {
     width: 100% !important;
   }
+}
+
+/* ---------- View Switcher ---------- */
+.sv-viewer__view-switcher {
+  justify-content: flex-start !important;
+  margin: 0 0 20px 0 !important;
+}
+
+.sv-view-toggler {
+  gap: 8px !important;
+  padding: 2px 0 !important;
+}
+
+.sv-view-toggler__item {
+  margin-right: 0 !important;
+  padding: 9px 13px !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  box-shadow: 2px 2px 0 var(--shadow-color) !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+              box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+
+.sv-view-toggler__item:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--highlight-bg) !important;
+  color: var(--text-heading) !important;
+  box-shadow: 2px 2px 0 var(--border-color) !important;
+  transform: translate(-1px, -1px) !important;
+}
+
+.sv-view-toggler__item.selected {
+  color: var(--text-heading) !important;
+  background-color: var(--highlight-bg) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 2px 2px 0 var(--border-color) !important;
+}
+
+.sv-view-toggler__item-icon {
+  font-size: 15px !important;
+  line-height: 1 !important;
+}
+
+.sv-layout.sv-is-dark .sv-view-toggler__item {
+  background-color: #2c2c2c !important;
+  color: var(--text) !important;
+}
+
+.sv-layout.sv-is-dark .sv-view-toggler__item:hover,
+.sv-layout.sv-is-dark .sv-view-toggler__item.selected {
+  background-color: #363636 !important;
+  color: var(--text-heading) !important;
+}
+
+/* ---------- Calendar View ---------- */
+.sv-layout .v-calendar-weekly,
+.sv-layout .v-calendar-daily {
+  background-color: var(--card-bg) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 var(--shadow-color) !important;
+  overflow: hidden !important;
+}
+
+.sv-layout .v-calendar-weekly__head-weekday,
+.sv-layout .v-calendar-weekly__day,
+.sv-layout .v-calendar-daily_head-day,
+.sv-layout .v-calendar-daily__day,
+.sv-layout .v-calendar-daily__intervals-head,
+.sv-layout .v-calendar-daily__intervals-body,
+.sv-layout .v-calendar-daily__day-interval {
+  border-color: var(--border-color) !important;
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-width: 1px !important;
+}
+
+.sv-layout .v-calendar-weekly__head-weekday.v-outside,
+.sv-layout .v-calendar-weekly__day.v-outside {
+  background-color: var(--bg) !important;
+}
+
+.sv-layout .v-calendar-weekly__head-weekday.v-past,
+.sv-layout .v-calendar-daily_head-day.v-past .v-calendar-daily_head-weekday,
+.sv-layout .v-calendar-daily_head-day.v-past .v-calendar-daily_head-day-label {
+  color: var(--text-secondary) !important;
+}
+
+.sv-layout .v-calendar-weekly__head-weekday,
+.sv-layout .v-calendar-weekly__day-label,
+.sv-layout .v-calendar-weekly__day-month,
+.sv-layout .v-calendar-daily_head-weekday,
+.sv-layout .v-calendar-daily_head-day-label,
+.sv-layout .v-calendar-daily__interval-text {
+  font-family: 'Source Code Pro', 'SF Mono', monospace !important;
+}
+
+.sv-layout .v-calendar-weekly__day-label,
+.sv-layout .v-calendar-daily_head-day-label {
+  border-radius: 0 !important;
+  color: var(--text) !important;
+}
+
+.sv-layout .v-calendar-weekly__day.v-present .v-calendar-weekly__day-label {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--highlight-bg) !important;
+}
+
+.sv-layout .v-calendar-weekly__day-label:hover,
+.sv-layout .v-calendar-daily_head-day-label:hover {
+  text-decoration: none !important;
+  background-color: var(--highlight-bg) !important;
+}
+
+.sv-layout .v-calendar-weekly .v-btn,
+.sv-layout .v-calendar-daily .v-btn {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+.sv-layout .v-calendar-weekly .v-btn:hover,
+.sv-layout .v-calendar-daily .v-btn:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--highlight-bg) !important;
+  color: var(--text-heading) !important;
+}
+
+.sv-layout.sv-is-dark .v-calendar-weekly,
+.sv-layout.sv-is-dark .v-calendar-daily {
+  background-color: #2a2a2a !important;
+}
+
+.sv-layout.sv-is-dark .v-calendar-weekly__head-weekday,
+.sv-layout.sv-is-dark .v-calendar-weekly__day,
+.sv-layout.sv-is-dark .v-calendar-daily_head-day,
+.sv-layout.sv-is-dark .v-calendar-daily__day,
+.sv-layout.sv-is-dark .v-calendar-daily__intervals-head,
+.sv-layout.sv-is-dark .v-calendar-daily__intervals-body,
+.sv-layout.sv-is-dark .v-calendar-daily__day-interval {
+  background-color: #2a2a2a !important;
+}
+
+.sv-layout.sv-is-dark .v-calendar-weekly__head-weekday.v-outside,
+.sv-layout.sv-is-dark .v-calendar-weekly__day.v-outside {
+  background-color: #242424 !important;
+}
+
+/* ---------- List View ---------- */
+.sv-tiles-list--grid.sv-tiles-list--list-view {
+  row-gap: 20px !important;
+}
+
+.sv-tile.sv-list-view {
+  border: 2px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  background-color: var(--card-bg) !important;
+  box-shadow: 6px 6px 0 var(--shadow-color) !important;
+}
+
+.sv-tile.sv-list-view .sv-tile__slider + .sv-tile__body {
+  border-left: 2px solid var(--border-color) !important;
+}
+
+@media (max-width: 768px) {
+  .sv-tile.sv-list-view .sv-tile__slider + .sv-tile__body {
+    border-left: none !important;
+    border-top: 2px solid var(--border-color) !important;
+  }
+}
+
+/* ---------- Highlight Button (Light Mode) ---------- */
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn,
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary,
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn[style],
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary[style] {
+  border-color: var(--border-color) !important;
+  background-color: var(--accent) !important;
+  color: var(--accent-text) !important;
+}
+
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn:hover,
+.sv-layout.sv-is-light .sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--border-color) !important;
+  color: var(--bg) !important;
 }

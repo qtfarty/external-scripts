@@ -2,3 +2,5 @@
 .brv/
 .claude/
 .DS_Store
+
+.local/

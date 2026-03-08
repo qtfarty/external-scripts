@@ -18,9 +18,9 @@
   --accent: #ccff00;
   --accent-hover: #b8e600;
   --accent-text: #1a1a1c;
-  --search-bg: transparent;
+  --search-bg: #e3e3e3;
   --card-image-bg: #d4d4d4;
-  --shadow-color: #2d2d30;
+  --shadow-color: var(--border-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,7 +36,7 @@
     --accent: #ccff00;
     --accent-hover: #b8e600;
     --accent-text: #1a1a1c;
-    --search-bg: transparent;
+    --search-bg: #2f2f2f;
     --card-image-bg: #333333;
     --shadow-color: var(--border-color);
   }
@@ -131,23 +131,32 @@ html { scroll-behavior: smooth; }
 /* ---- #2 Header CTA — Forma navbar-title style (outlined box + offset shadow) ---- */
 .sv-desc-btn {
   display: inline-block !important;
-  background-color: transparent !important;
-  color: var(--text-heading) !important;
+  background-color: var(--accent) !important;
+  color: var(--accent-text) !important;
   font-weight: 700 !important;
   font-size: 1.15rem !important;
   padding: 12px 36px !important;
   border-radius: 0 !important;
   text-decoration: none !important;
   letter-spacing: -0.01em !important;
-  border: 3px solid var(--border-color) !important;
+  border: 3px solid var(--accent) !important;
   position: relative !important;
-  transition: color 0.2s ease, border-color 0.2s ease !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
   line-height: 1.3 !important;
   font-family: 'Inter', -apple-system, sans-serif !important;
 }
 
 .sv-content-block .sv-md-editor .sv-desc-btn {
   height: fit-content !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn,
+.sv-content-block .sv-md-editor .sv-desc-btn:visited,
+.sv-content-block .sv-md-editor .sv-desc-btn:active,
+.sv-content-block .sv-md-editor .sv-desc-btn:focus {
+  color: var(--accent-text) !important;
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
 }
 
 /* Forma-style offset double-border (bottom-left shadow) */
@@ -158,21 +167,21 @@ html { scroll-behavior: smooth; }
   left: -7px !important;
   bottom: -7px !important;
   right: 5px !important;
-  border-bottom: 3px solid var(--border-color) !important;
-  border-left: 3px solid var(--border-color) !important;
+  border-bottom: 3px solid var(--accent) !important;
+  border-left: 3px solid var(--accent) !important;
   pointer-events: none !important;
   transition: border-color 0.2s ease !important;
 }
 
 .sv-desc-btn:hover {
-  color: var(--accent) !important;
-  border-color: var(--accent) !important;
-  background-color: transparent !important;
+  color: var(--accent-text) !important;
+  border-color: var(--accent-hover) !important;
+  background-color: var(--accent-hover) !important;
   transform: none !important;
 }
 
 .sv-desc-btn:hover::before {
-  border-color: var(--accent) !important;
+  border-color: var(--accent-hover) !important;
 }
 
 /* ---- #3 Zigzag accent dividers (3 sections) ---- */
@@ -212,7 +221,7 @@ html { scroll-behavior: smooth; }
 /* ---------- Search Bar ---------- */
 /* ---- #4 Search: transparent bg + full mobile width ---- */
 .sv-viewer-form {
-  background-color: var(--bg) !important;
+  background-color: transparent !important;
   border-bottom: none !important;
   padding: 12px 0 !important;
   position: sticky;
@@ -225,6 +234,11 @@ html { scroll-behavior: smooth; }
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
+}
+
+.sv-viewer-form__search-inner,
+.c.sv-viewer-form__search-inner {
+  max-width: 100% !important;
 }
 
 .sv-layout.sv-viewer-mobile .sv-viewer-form__search {
@@ -251,8 +265,13 @@ html { scroll-behavior: smooth; }
   box-shadow: none !important;
 }
 
+.sv-icon-search-new:before {
+  content: "\E92E";
+  font-weight: 900;
+}
+
 .sv-viewer-form__input-icon {
-  color: var(--text-secondary) !important;
+  color: var(--border-color) !important;
 }
 
 /* ---------- Masonry Grid ---------- */
@@ -262,13 +281,16 @@ html { scroll-behavior: smooth; }
   column-gap: 24px !important;
   padding: 24px 0 !important;
 }
-
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   .sv-tiles-list.sv-tiles-list--flex {
     column-count: 3 !important;
   }
 }
-
+@media (min-width: 1600px) {
+  .sv-tiles-list.sv-tiles-list--flex {
+    column-count: 4 !important;
+  }
+}
 @media (max-width: 768px) {
   .sv-tiles-list.sv-tiles-list--flex {
     column-count: 2 !important;
@@ -302,10 +324,28 @@ html { scroll-behavior: smooth; }
   box-shadow: 8px 8px 0 var(--shadow-color) !important;
 }
 
+.sv-tile:not(.sv-is-highlighted) {
+  border-color: var(--shadow-color) !important;
+  box-shadow: 6px 6px 0 var(--shadow-color) !important;
+}
+
+.sv-tile:not(.sv-is-highlighted):hover {
+  box-shadow: 8px 8px 0 var(--shadow-color) !important;
+}
+
+.sv-layout.sv-is-light .sv-tile__title {
+  border-color: var(--shadow-color) !important;
+}
+
 /* ---- #6c + #6d Highlighted cards: accent border + readable bg ---- */
 .sv-tile.sv-is-highlighted {
-  border: 3px solid var(--accent) !important;
+  border: var(--border) !important;
   background-color: var(--highlight-bg) !important;
+  box-shadow: 6px 6px 0 var(--accent) !important;
+}
+
+.sv-tile.sv-is-highlighted:hover {
+  box-shadow: 8px 8px 0 var(--accent) !important;
 }
 
 .sv-layout.sv-is-light .sv-tile.sv-is-highlighted:before {
@@ -314,7 +354,7 @@ html { scroll-behavior: smooth; }
 
 .sv-layout.sv-is-dark .sv-tile.sv-is-highlighted {
   background-color: #3a3a3a !important;
-  border-color: var(--accent) !important;
+  border-color: var(--border-color) !important;
   border-radius: 0 !important;
 }
 
@@ -347,7 +387,7 @@ html { scroll-behavior: smooth; }
 
 .sv-tile__image {
   width: 100% !important;
-  aspect-ratio: 3 / 2 !important;
+  aspect-ratio: 1.91 / 1 !important;
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -457,18 +497,32 @@ html { scroll-behavior: smooth; }
 
 /* Override SpreadSimple inline styles on highlighted card buttons */
 .sv-tile__btn[style],
-.sv-tile.sv-is-highlighted .sv-tile__btn,
-.sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary {
+.sv-tile__btn.is-secondary[style] {
   color: var(--text) !important;
   background-color: transparent !important;
 }
 
+.sv-tile.sv-is-highlighted .sv-tile__btn,
+.sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary {
+  color: var(--text) !important;
+  background-color: transparent !important;
+  border-color: var(--accent) !important;
+  box-shadow: none !important;
+}
+
 .sv-tile__btn:hover,
-.sv-tile__btn.is-secondary:hover,
-.sv-tile.sv-is-highlighted .sv-tile__btn:hover {
+.sv-tile__btn.is-secondary:hover {
   background-color: var(--accent) !important;
   color: var(--accent-text) !important;
   border-color: var(--accent) !important;
+}
+
+.sv-tile.sv-is-highlighted .sv-tile__btn:hover,
+.sv-tile.sv-is-highlighted .sv-tile__btn.is-secondary:hover {
+  background-color: transparent !important;
+  color: var(--text) !important;
+  border-color: var(--accent-hover) !important;
+  box-shadow: none !important;
 }
 
 /* ---------- Footer ---------- */
@@ -503,39 +557,38 @@ html { scroll-behavior: smooth; }
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: auto !important;
-  height: auto !important;
-  border-radius: 0 !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 999px !important;
   border: none !important;
-  background-color: transparent !important;
-  transition: opacity 0.2s ease !important;
-  padding: 4px !important;
+  background-color: #808080 !important;
+  transition: background-color 0.2s ease, transform 0.2s ease !important;
+  padding: 7px !important;
 }
 
 .sv-social-share-btns__badge:hover {
-  background-color: transparent !important;
+  background-color: var(--accent) !important;
   border: none !important;
+  transform: scale(0.95) !important;
 }
 
 .sv-social-share-btns__badge-icon {
-  width: 22px !important;
-  height: 22px !important;
-  filter: none !important;
-  opacity: 0.5 !important;
-  transition: opacity 0.2s ease !important;
+  width: 18px !important;
+  height: 18px !important;
+  filter: grayscale(1) brightness(0.18) !important;
+  opacity: 1 !important;
+  transition: filter 0.2s ease !important;
 }
 
 .sv-social-share-btns__badge:hover .sv-social-share-btns__badge-icon {
-  opacity: 1 !important;
+  filter: grayscale(1) brightness(0.12) !important;
 }
-
 @media (prefers-color-scheme: dark) {
   .sv-social-share-btns__badge-icon {
-    filter: invert(1) !important;
+    filter: grayscale(1) brightness(0.18) !important;
   }
   .sv-social-share-btns__badge:hover .sv-social-share-btns__badge-icon {
-    filter: invert(1) !important;
-    opacity: 1 !important;
+    filter: grayscale(1) brightness(0.12) !important;
   }
 }
 

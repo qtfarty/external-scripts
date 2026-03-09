@@ -1200,3 +1200,184 @@ html { scroll-behavior: smooth; }
   color: var(--theme-darkest) !important;
   border-color: var(--theme-darkest) !important;
 }
+
+/* =========================================
+   USER SPECIFIED OVERRIDES (LATEST)
+   ========================================= */
+
+/* # 共通 (Shared) */
+.sv-layout .sv-tile.sv-is-highlighted:before {
+   display: none !important;
+}
+
+.sv-layout .sv-viewer__about::before {
+    display: none !important;
+}
+
+.sv-layout.sv-viewer-mobile .sv-viewer-form__search {
+    border: none !important;
+}
+
+.sv-content-block .sv-md-editor .sv-desc-btn {
+    height: fit-content !important;
+}
+
+/* sv-desc-btn hover push animation */
+.sv-desc-btn {
+    transition: all 0.2s ease !important;
+}
+.sv-desc-btn:hover {
+    transform: translate(3px, 3px) !important;
+    box-shadow: 1px 1px 0 currentColor !important;
+}
+
+/* Social icons silhouette logic - trying to use SVG fill */
+/* User says: "svgの色を調整する形で頑張ろう！" */
+.sv-social-share-btns__badge {
+    background-color: var(--card-bg) !important; /* gray circle shape */
+    border: none !important;
+    transition: all 0.2s ease !important;
+    border-radius: 50% !important;
+}
+
+.sv-social-share-btns__badge svg path, 
+.sv-social-share-btns__badge svg rect, 
+.sv-social-share-btns__badge svg polygon, 
+.sv-social-share-btns__badge svg circle {
+    fill: #000000 !important; /* black interior shape */
+    transition: fill 0.2s ease !important;
+}
+
+.sv-social-share-btns__badge:hover {
+    background-color: var(--accent) !important; /* accent background on hover */
+}
+
+/* Fallback if they are img tags */
+.sv-social-share-btns__badge img {
+    /* If they are img, we can't style SVG paths. We will just use the filter for safety, 
+       but we remove it on hover since background is accent and icon is black.
+       Wait, filter to make it black: brightness(0) 
+    */
+    filter: brightness(0) !important;
+}
+
+/* h1 ALL CAPS */
+h1, .sv-viewer__about .sv-md-editor h1 {
+    text-transform: uppercase !important;
+}
+
+/* =========================================
+   # ライトモード (Light Mode) 
+   ========================================= */
+
+.sv-layout.sv-theme-light .sv-desc-btn {
+    border: 2px solid #000 !important;
+    box-shadow: 4px 4px 0 #000 !important;
+    color: #000 !important;
+    background-color: var(--search-bg) !important;
+}
+
+.sv-layout.sv-theme-light .sv-desc-btn:hover {
+    background-color: var(--accent) !important;
+    box-shadow: 1px 1px 0 #000 !important;
+}
+
+.sv-layout.sv-theme-light .sv-tile__btn.is-secondary:hover {
+    background-color: var(--accent) !important;
+}
+
+.sv-layout.sv-theme-light .sv-tile.sv-is-highlighted {
+    box-shadow: 6px 6px 0 var(--accent) !important;
+}
+
+/* Normal & Highlighted card buttons combined */
+.sv-layout.sv-theme-light .sv-tile .sv-tile__btn,
+.sv-layout.sv-theme-light .sv-tile.sv-is-highlighted .sv-tile__btn {
+    border: 2px solid #000 !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.sv-layout.sv-theme-light .sv-tile .sv-tile__btn:hover,
+.sv-layout.sv-theme-light .sv-tile.sv-is-highlighted .sv-tile__btn:hover {
+    background-color: var(--accent) !important;
+    color: #000 !important;
+}
+
+.sv-layout.sv-theme-light .sv-calendar__event {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom: 3px solid var(--accent) !important;
+    color: #000 !important;
+    transition: all 0.2s ease !important;
+}
+
+.sv-layout.sv-theme-light .sv-calendar__event:hover {
+    transform: translate(2px, 2px) !important;
+    background-color: var(--accent) !important;
+    color: #000 !important;
+}
+
+
+/* =========================================
+   # ダークモード (Dark Mode)
+   ========================================= */
+
+.sv-layout.sv-theme-dark .sv-tile-aside__close-btn:hover {
+    background-color: var(--accent) !important;
+    color: #000 !important;
+}
+
+.sv-layout.sv-theme-dark .sv-desc-btn {
+    border: 2px solid #000 !important;
+    box-shadow: 4px 4px 0 #000 !important;
+    color: #000 !important;
+    background-color: var(--search-bg) !important;
+}
+
+.sv-layout.sv-theme-dark .sv-desc-btn:hover {
+    background-color: var(--accent) !important;
+    border-color: var(--cta-hover-magenta) !important;
+    color: var(--cta-hover-magenta) !important;
+    box-shadow: 1px 1px 0 var(--cta-hover-magenta) !important;
+}
+
+.sv-layout.sv-theme-dark .sv-tile.sv-is-highlighted {
+    border-color: var(--accent) !important;
+}
+
+/* Normal & Highlighted card buttons combined */
+.sv-layout.sv-theme-dark .sv-tile .sv-tile__btn,
+.sv-layout.sv-theme-dark .sv-tile.sv-is-highlighted .sv-tile__btn {
+    border: 2px solid #fff !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.sv-layout.sv-theme-dark .sv-tile .sv-tile__btn:hover,
+.sv-layout.sv-theme-dark .sv-tile.sv-is-highlighted .sv-tile__btn:hover {
+    background-color: var(--accent) !important;
+    color: #000 !important;
+    border-color: var(--cta-hover-magenta) !important;
+}
+
+.sv-layout.sv-theme-dark .sv-btn-switcher__item:hover,
+.sv-layout.sv-theme-dark .sv-button-reset:hover {
+    color: #fff !important;
+}
+
+.sv-layout.sv-theme-dark .sv-calendar__event {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-bottom: 3px solid var(--accent) !important;
+    color: #fff !important;
+    transition: all 0.2s ease !important;
+}
+
+.sv-layout.sv-theme-dark .sv-calendar__event:hover {
+    transform: translate(2px, 2px) !important;
+    background-color: var(--accent) !important;
+    color: var(--bg) !important;
+}

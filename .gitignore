@@ -2,5 +2,17 @@
 .brv/
 .claude/
 .DS_Store
-
 .local/
+
+# Local Debugging Scripts & Junk
+patch_*.py
+make_fixes.py
+test_colors.html
+cors_server.py
+parse_theme.py
+search_js.py
+tmp_js/
+node_modules/
+package-lock.json
+package.json
+/tmp/puppeteer_test/

@@ -94,16 +94,104 @@
     });
   }
 
+  /**
+   * Inline social icon SVGs with selective fill tagging.
+   * Replaces <img src="*.svg"> with inline <svg> elements and
+   * tags child elements with data-icon-role="bg" or "logo"
+   * so CSS can independently control background vs logo colours.
+   *
+   * Detection logic (all SpreadSimple social SVGs follow
+   * the same pattern: brand-coloured bg + white logo):
+   *   white-ish fill → logo
+   *   everything else (solid brand colour, gradient url) → bg
+   *   fill="none" / mask internals → untouched
+   */
+  function inlineSocialSVGs() {
+    var WHITE_RE = /^(white|#fff(fff)?|#fbfbfd)$/i;
+
+    document.querySelectorAll('.sv-social-share-btns__badge img[src$=".svg"]').forEach(function (img) {
+      fetch(img.src)
+        .then(function (r) { return r.text(); })
+        .then(function (svgText) {
+          var wrapper = document.createElement('div');
+          wrapper.innerHTML = svgText.trim();
+          var svg = wrapper.querySelector('svg');
+          if (!svg) return;
+
+          svg.classList.add('sv-social-inline-svg');
+          svg.setAttribute('width', '22');
+          svg.setAttribute('height', '22');
+          svg.removeAttribute('fill');
+
+          // Tag every filled attribute element as bg or logo
+          svg.querySelectorAll('[fill]').forEach(function (el) {
+            var fill = (el.getAttribute('fill') || '').trim();
+            if (!fill || fill.toLowerCase() === 'none') return;
+            if (el.closest('mask')) return; // Skip elements inside <mask> — their fills define clip shape, not colour
+            if (WHITE_RE.test(fill)) {
+              el.setAttribute('data-icon-role', 'logo');
+            } else {
+              el.setAttribute('data-icon-role', 'bg');
+            }
+          });
+
+          // Also check inline style fills
+          svg.querySelectorAll('*').forEach(function (el) {
+            if (el.style && el.style.fill) {
+              var fill = el.style.fill.trim();
+              if (!fill || fill.toLowerCase() === 'none') return;
+              if (el.closest('mask')) return; // Skip elements inside <mask>
+              if (WHITE_RE.test(fill)) {
+                el.setAttribute('data-icon-role', 'logo');
+              } else {
+                el.setAttribute('data-icon-role', 'bg');
+              }
+              el.style.fill = '';
+            }
+          });
+
+          img.replaceWith(svg);
+        })
+        .catch(function () {}); // fallback: img stays as-is
+    });
+  }
+
+  /**
+   * Wait for social icons in footer to render, then inline them.
+   */
+  function waitForSocialIconsAndInline() {
+    var observer = new MutationObserver(function (mutations, obs) {
+      var icons = document.querySelectorAll('.sv-social-share-btns__badge img[src$=".svg"]');
+      if (icons.length > 0) {
+        obs.disconnect();
+        setTimeout(inlineSocialSVGs, 200);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Fallback: if icons already exist
+    var existing = document.querySelectorAll('.sv-social-share-btns__badge img[src$=".svg"]');
+    if (existing.length > 0) {
+      setTimeout(inlineSocialSVGs, 200);
+    }
+  }
+
   // --- Init ---
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       waitForTilesAndInit();
+      waitForSocialIconsAndInline();
       setTimeout(observeImageLoads, 500);
       setTimeout(observeFilterChanges, 500);
       observeResize();
     });
   } else {
     waitForTilesAndInit();
+    waitForSocialIconsAndInline();
     setTimeout(observeImageLoads, 500);
     setTimeout(observeFilterChanges, 500);
     observeResize();

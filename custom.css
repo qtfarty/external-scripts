@@ -729,7 +729,7 @@ html { scroll-behavior: smooth; }
   transform: scale(1.1) !important;
 }
 
-/* inline SVG: サイズ + currentColor 継承 */
+/* inline SVG: サイズ */
 .sv-social-share-btns__badge .sv-social-inline-svg {
   width: 20px !important;
   height: 20px !important;
@@ -737,9 +737,20 @@ html { scroll-behavior: smooth; }
   flex-shrink: 0 !important;
 }
 
-.sv-social-share-btns__badge .sv-social-inline-svg [fill]:not([fill="none"]) {
-  fill: currentColor !important;
+/* SVG内部背景: 透明化（バッジbackground-colorが透けて見える） */
+.sv-social-share-btns__badge [data-icon-role="bg"] {
+  fill: transparent !important;
+}
+
+/* SVG内部ロゴ: ページ背景色でくり抜き効果 */
+.sv-social-share-btns__badge [data-icon-role="logo"] {
+  fill: var(--bg) !important;
   transition: fill 0.2s ease !important;
+}
+
+/* ホバー: ロゴを黒に */
+.sv-social-share-btns__badge:hover [data-icon-role="logo"] {
+  fill: #000 !important;
 }
 
 /* img fallback: white icon */

@@ -37,6 +37,9 @@
         setTimeout(refreshMasonry, 300);
         // Refresh again after images likely loaded
         setTimeout(refreshMasonry, 1500);
+        // Duotone gradient map for card images
+        setTimeout(initDuotone, 400);
+        setTimeout(applyDuotoneOverlays, 1600);
       }
     });
 
@@ -50,6 +53,8 @@
     if (existing.length > 0) {
       setTimeout(refreshMasonry, 300);
       setTimeout(refreshMasonry, 1500);
+      setTimeout(initDuotone, 400);
+      setTimeout(applyDuotoneOverlays, 1600);
     }
   }
 
@@ -65,7 +70,10 @@
     // so we use a series of timed refreshes
     const delays = [500, 1000, 2000, 4000];
     delays.forEach(function (delay) {
-      setTimeout(refreshMasonry, delay);
+      setTimeout(function () {
+        refreshMasonry();
+        applyDuotoneOverlays();
+      }, delay);
     });
   }
 
@@ -79,7 +87,10 @@
     let debounceTimer;
     searchInput.addEventListener('input', function () {
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(refreshMasonry, 350);
+      debounceTimer = setTimeout(function () {
+        refreshMasonry();
+        applyDuotoneOverlays();
+      }, 350);
     });
   }
 
@@ -178,6 +189,89 @@
     if (existing.length > 0) {
       setTimeout(inlineSocialSVGs, 200);
     }
+  }
+
+  /* ============================================================
+     Duotone Gradient-Map for Card Images
+     Default : dark tones → shadow colour, light tones → accent
+     Hover   : cross-fades to original colours
+     Shadow colour
+       light mode → border-color #2d2d30
+       dark  mode → background   #1e1e1e
+     Highlight colour → accent #ccff00  (both modes)
+     ============================================================ */
+  var duotoneReady = false;
+
+  function buildDuotoneFilter() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Shadow channel values
+    var sR = dark ? 30 / 255 : 45 / 255;
+    var sG = dark ? 30 / 255 : 45 / 255;
+    var sB = dark ? 30 / 255 : 48 / 255;
+    // Highlight channel values (#ccff00)
+    var hR = 204 / 255, hG = 1, hB = 0;
+
+    var svg = document.getElementById('duotone-svg');
+    if (!svg) {
+      svg = document.createElementNS(svgNS, 'svg');
+      svg.id = 'duotone-svg';
+      svg.style.cssText =
+        'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none';
+      document.body.appendChild(svg);
+    }
+    svg.innerHTML =
+      '<defs><filter id="duotone-filter" color-interpolation-filters="sRGB">' +
+      '<feColorMatrix type="saturate" values="0"/>' +
+      '<feComponentTransfer>' +
+      '<feFuncR type="table" tableValues="' + sR.toFixed(4) + ' ' + hR.toFixed(4) + '"/>' +
+      '<feFuncG type="table" tableValues="' + sG.toFixed(4) + ' ' + hG.toFixed(4) + '"/>' +
+      '<feFuncB type="table" tableValues="' + sB.toFixed(4) + ' ' + hB.toFixed(4) + '"/>' +
+      '</feComponentTransfer></filter></defs>';
+  }
+
+  function applyDuotoneOverlays() {
+    document.querySelectorAll('.sv-tile__image').forEach(function (el) {
+      if (el.querySelector('.duotone-overlay')) return;
+      var bg = el.style.backgroundImage;
+      if (!bg || bg === 'none') return;
+      // Layer 1 (bottom): grayscale — fades out with delay
+      var gray = document.createElement('div');
+      gray.className = 'duotone-overlay-gray';
+      gray.style.backgroundImage = bg;
+      el.appendChild(gray);
+      // Layer 2 (top): duotone colour map — fades out first
+      var duo = document.createElement('div');
+      duo.className = 'duotone-overlay';
+      duo.style.backgroundImage = bg;
+      el.appendChild(duo);
+    });
+  }
+
+  function initDuotone() {
+    if (!duotoneReady) {
+      buildDuotoneFilter();
+      window.matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', buildDuotoneFilter);
+
+      // Persistent observer: catches tiles added later by SPA routing,
+      // lazy-load, or filter/search re-renders, AND background-image
+      // being set after the element already exists in the DOM.
+      var duotoneDebounce;
+      new MutationObserver(function () {
+        clearTimeout(duotoneDebounce);
+        duotoneDebounce = setTimeout(applyDuotoneOverlays, 150);
+      }).observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+
+      duotoneReady = true;
+    }
+    applyDuotoneOverlays();
   }
 
   // --- Init ---

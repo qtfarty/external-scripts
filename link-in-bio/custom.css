@@ -544,6 +544,42 @@ html { scroll-behavior: smooth; }
   background-color: var(--card-image-bg) !important;
   border-bottom: var(--border) !important;
   border-radius: 0 !important;
+  position: relative !important;
+}
+
+/* ---------- Duotone Image Overlay (two-stage fade) ---------- */
+/* Shared base for both layers */
+.duotone-overlay,
+.duotone-overlay-gray {
+  position: absolute !important;
+  inset: 0 !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+/* Layer 1 (bottom): grayscale — fades out AFTER the colour */
+.duotone-overlay-gray {
+  filter: grayscale(1) contrast(1.05) !important;
+  z-index: 1 !important;
+  transition: opacity 0.4s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Layer 2 (top): duotone colour map — fades out FIRST */
+.duotone-overlay {
+  filter: url(#duotone-filter) !important;
+  z-index: 2 !important;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Hover: both layers fade to 0, but at different speeds */
+.sv-tile:hover .duotone-overlay {
+  opacity: 0 !important;
+}
+.sv-tile:hover .duotone-overlay-gray {
+  opacity: 0 !important;
 }
 
 /* ---------- Card Body ---------- */
